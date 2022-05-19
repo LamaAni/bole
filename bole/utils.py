@@ -1,9 +1,20 @@
+import logging
+import os
 import string
 import random
 from datetime import datetime
 from typing import Type, Union
 
 DEFAULT_RANDOM_STRING_CHARS = string.ascii_letters + string.digits
+
+
+def resolve_log_level(level_name: Union[str, int]):
+    if isinstance(level_name, int):
+        return level_name
+    level = logging.getLevelName(level_name)
+    if isinstance(level, str):
+        level = logging.DEBUG
+    return level
 
 
 def create_random_string(count: int = 5, charset: str = DEFAULT_RANDOM_STRING_CHARS):
@@ -15,6 +26,16 @@ def datetime_to_iso(val: datetime = None):
     as_iso = val.astimezone().replace(microsecond=0).isoformat()
     as_iso = as_iso[:-3] + as_iso[-2:]
     return as_iso
+
+
+def resolve_path(*path_parts: str, root_directory: str = None):
+    """Resolve a path given a root directory"""
+    path_parts = [p.strip() for p in path_parts if p is not None and len(p.strip()) > 0]
+    assert len(path_parts) > 0, ValueError("You must provide at least one path part")
+    root_directory = root_directory or os.curdir
+    if not path_parts[0].startswith("/"):
+        path_parts = [root_directory] + path_parts
+    return os.path.abspath(os.path.join(*path_parts))
 
 
 def get_same_type(a, b, *types: Type):

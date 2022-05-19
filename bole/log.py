@@ -1,7 +1,7 @@
 import os
 import logging
 from typing import Dict, Union
-from bole.utils import create_random_string, datetime_to_iso
+from bole.utils import create_random_string, datetime_to_iso, resolve_log_level
 from collections import defaultdict
 
 NO_COLOR = os.environ.get("NO_COLOR", "false").lower() == "true"
@@ -83,11 +83,7 @@ def create(logger_name: str = None, log_level: Union[str, int] = None):
     logger_name = logger_name or "bole-log-" + create_random_string()
     log = logging.getLogger(logger_name)
 
-    log_level = log_level or os.environ.get("LOG_LEVEL", "INFO")
-    if isinstance(log_level, str):
-        log_level = logging.getLevelName(log_level)
-        if isinstance(log_level, str):
-            log_level = logging.DEBUG
+    log_level = resolve_log_level(log_level or os.environ.get("LOG_LEVEL", "INFO"))
     log.setLevel(log_level)
 
     formatter = BoleLogFormatter()
