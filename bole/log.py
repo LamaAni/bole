@@ -79,7 +79,7 @@ class BoleLogFormatter(logging.Formatter):
         return self.log_format % format_map
 
 
-def create(logger_name: str = None, log_level: Union[str, int] = None):
+def create_logger(logger_name: str = None, log_level: Union[str, int] = None):
     logger_name = logger_name or "bole-log-" + create_random_string()
     log = logging.getLogger(logger_name)
 
@@ -94,7 +94,7 @@ def create(logger_name: str = None, log_level: Union[str, int] = None):
     return log
 
 
-log = create("bole-log-core")
+log = create_logger("bole-log-core")
 
 if __name__ == "__main__":
     log.debug("aadsad")

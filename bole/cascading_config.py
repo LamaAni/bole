@@ -24,21 +24,29 @@ class CascadingConfig(dict):
         self._source_path: str = None
         self._source_directory: str = None
 
-    CONFIG_FILEPATHS: List[str] = ["config.yaml", "config.json"]
-    """A collection of config file paths where the configuration
-    may exist. Can be an absolute or relative path. If multiple configuration file
-    names exist, the first file will be taken.
-    """
-
     @property
     def inherit(self) -> str:
         """If true, this config can inherit parent folder configurations.
         Used in 'load' function after initialization"""
         return self.get("inherit", None)
 
+    @property
+    def inherit_siblings(self) -> str:
+        """If true, this config can inherit parent folder configurations.
+        Used in 'load' function after initialization"""
+        return self.get("inherit_siblings", None)
+
     def initialize(self):
         """Call to initialize the configuration. Overridable."""
         pass
+
+    CONFIG_FILEPATHS: List[str] = ["config.yaml", "config.json"]
+    """A collection of config file paths where the configuration
+    may exist. Can be an absolute or relative path. If multiple configuration file
+    names exist, the first file will be taken.
+
+    class Overridable
+    """
 
     @classmethod
     def load(
