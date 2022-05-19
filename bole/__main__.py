@@ -2,4 +2,4 @@ import sys
 from bole.cli import run_cli_main
 
 if __name__ == "__main__":
-    run_cli_main(sys.argv)
+    run_cli_main()

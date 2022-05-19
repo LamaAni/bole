@@ -1,4 +1,20 @@
+import string
+import random
+from datetime import datetime
 from typing import Type, Union
+
+DEFAULT_RANDOM_STRING_CHARS = string.ascii_letters + string.digits
+
+
+def create_random_string(count: int = 5, charset: str = DEFAULT_RANDOM_STRING_CHARS):
+    return "".join(random.choice(DEFAULT_RANDOM_STRING_CHARS) for i in range(count))
+
+
+def datetime_to_iso(val: datetime = None):
+    val = val or datetime.now()
+    as_iso = val.astimezone().replace(microsecond=0).isoformat()
+    as_iso = as_iso[:-3] + as_iso[-2:]
+    return as_iso
 
 
 def get_same_type(a, b, *types: Type):

@@ -119,7 +119,7 @@ class CascadingConfig(dict):
                 break
 
         if max_inherit_depth > -1:
-            configurations = configurations[0 : max_inherit_depth + 1]
+            configurations = configurations[0 : max_inherit_depth + 1]  # noqa E203
 
         # Merging the configuration into a new config.
         if len(configurations) == 1:
