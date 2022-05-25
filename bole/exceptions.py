@@ -1,0 +1,2 @@
+class BoleException(Exception):
+    pass

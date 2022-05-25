@@ -1,11 +1,17 @@
+import json
 import logging
 import os
+import re
 import string
 import random
 from datetime import datetime
-from typing import Type, Union
+from typing import Any, Callable, List, Type, Union
 
 DEFAULT_RANDOM_STRING_CHARS = string.ascii_letters + string.digits
+
+
+def clean_data_types(val):
+    return json.loads(json.dumps(val))
 
 
 def resolve_log_level(level_name: Union[str, int]):
@@ -104,3 +110,70 @@ def deep_merge(target: Union[dict, list], *sources: Union[dict, list], concatena
                 else:
                     target[key] = src[key]
     return target
+
+
+COLLECTION_ITEM_PART_REGEX = r"^(.*?)(\[([0-9]*)\]|)$"
+
+
+def find_in_collection(
+    parent: Union[dict, list],
+    path: Union[str, List[str]],
+    action: Callable[[Any, Any], Any] = None,
+):
+    """Returns a path within a data collection (list, dict)
+
+    Args:
+        val (Union[dict, list]): The value to search
+        path (Union[str, List[str]]): The path, parts seperated by '.', eg,
+            [22].a.b[33].
+            empty parts are ignored '..'
+            If a list then . is ignored.
+        action((value, parent)=>any, optional): The action to take when found
+
+    Returns:
+        (any: The value found, bool: true if the value was found)
+
+    """
+    # Path defined as a.b[2].c
+    if isinstance(path, str):
+        path = path.split(".")
+
+    was_found = False
+    item = None
+
+    if len(path) == 0:
+        return item, was_found
+
+    cur_item = path[0]
+    item_parts = re.match(COLLECTION_ITEM_PART_REGEX, cur_item)
+    assert item_parts is not None, f"item parts must match the regex '{COLLECTION_ITEM_PART_REGEX}'"
+
+    item_name = item_parts[1] if len(item_parts[1]) > 0 else None
+    list_number = int(item_parts[2][1]) if len(item_parts[2]) > 0 else None
+
+    if item_name is None and list_number is None:
+        return find_in_collection(parent, path[1:])
+
+    assert item_name is not None or list_number is not None, "Invalid item path part " + cur_item
+
+    if item_name is not None:
+        assert isinstance(parent, dict), f"{cur_item} references a dict value but parent is not a dict"
+        if item_name not in parent:
+            return None, False
+        item = parent.get(item_name)
+        was_found = True
+    if list_number is not None:
+        assert isinstance(parent, list), f"{cur_item} references a list value but parent is not a list"
+        if len(parent) <= list_number:
+            return None, False
+        item = parent[list_number]
+        was_found = True
+
+    path = path[1:]
+    if len(path) > 0:
+        return find_in_collection(item, path)
+
+    if was_found and action is not None:
+        item = action(item, parent)
+
+    return item, was_found

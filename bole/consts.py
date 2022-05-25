@@ -1,4 +1,12 @@
 import os
+import re
+from typing import List
+
+CONFIG_SEARCH_PATHS: List[str] = re.split(r"[\s,]+", os.environ.get("CONFIG_SEARCH_PATHS", "config.yaml config.json"))
+"""A collection of default config search paths (comma or space separated) where the configuration
+may exist. Can be an absolute or relative path. If multiple configuration file
+names exist, the first file will be taken.
+"""
 
 
 def is_show_full_errors():
