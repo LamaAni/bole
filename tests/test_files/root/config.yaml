@@ -1,0 +1,4 @@
+test_value: "source"
+import:
+  - path: "**/*.import.yaml"
+    recursive: true
