@@ -1,0 +1,3 @@
+# Parent config
+test_value: "parent"
+parent_value: "parent"

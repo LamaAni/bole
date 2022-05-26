@@ -60,7 +60,12 @@ def get_same_type(a, b, *types: Type):
     return None
 
 
-def deep_merge(target: Union[dict, list], *sources: Union[dict, list], concatenate_lists: bool = True):
+def deep_merge(
+    target: Union[dict, list],
+    *sources: Union[dict, list],
+    append_lists: bool = True,
+    insert_lists: bool = False,
+):
     """Merge dictionaries and lists into a single object.
 
     Args:
@@ -71,7 +76,12 @@ def deep_merge(target: Union[dict, list], *sources: Union[dict, list], concatena
             "Merge target and source must be of the same type (list)",
         )
         # List merges as concat, and dose not merge the internal values.
-        if concatenate_lists:
+        if append_lists:
+            for src in sources:
+                target += src
+        elif insert_lists:
+            sources: list = list(sources)
+            sources.reverse()
             for src in sources:
                 target += src
         else:
@@ -90,7 +100,13 @@ def deep_merge(target: Union[dict, list], *sources: Union[dict, list], concatena
                     if merge_type is None:
                         target[i] = src[i]
                     else:
-                        target[i] = deep_merge(merge_type(), target[i], src[i])
+                        target[i] = deep_merge(
+                            merge_type(),
+                            target[i],
+                            src[i],
+                            append_lists=append_lists,
+                            insert_lists=insert_lists,
+                        )
 
         return target
 
@@ -106,7 +122,13 @@ def deep_merge(target: Union[dict, list], *sources: Union[dict, list], concatena
                     continue
                 merge_type = get_same_type(src[key], target[key], list, dict)
                 if merge_type is not None:
-                    target[key] = deep_merge(merge_type(), target[key], src[key])
+                    target[key] = deep_merge(
+                        merge_type(),
+                        target[key],
+                        src[key],
+                        append_lists=append_lists,
+                        insert_lists=insert_lists,
+                    )
                 else:
                     target[key] = src[key]
     return target

@@ -1,7 +1,7 @@
 import os
 import click
 from typing import Union
-from bole.config import CascadingConfig
+from bole.config.cascading import CascadingConfig
 from bole.consts import is_show_full_errors, mark_show_full_errors
 from bole.format import PrintFormat, get_print_formatted
 

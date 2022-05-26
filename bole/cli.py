@@ -1,6 +1,6 @@
 from typing import List
 import click
-from bole.config import CascadingConfig
+from bole.config.cascading import CascadingConfig
 from bole.format import PrintFormat
 
 from bole.log import log
@@ -36,7 +36,7 @@ def config():
     pass
 
 
-def get_config_values(
+def get_config_value(
     config: CascadingConfig,
     dict_paths: List[str],
     allow_null: bool = False,
@@ -90,7 +90,7 @@ def config_get(
     will print the entire config (same as view).
     """
     config = CliConfigOptions(kwargs).load()
-    to_display = get_config_values(
+    to_display = get_config_value(
         config,
         dict_paths=dict_paths,
         allow_null=allow_null,
