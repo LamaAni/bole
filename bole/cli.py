@@ -15,7 +15,7 @@ def bole():
     pass
 
 
-@bole.command("version", help="Show the yapenv version")
+@bole.command("version", help="Show the bole version")
 def version():
     print(__version__)
 
@@ -90,7 +90,7 @@ def config_get(
     allow_missing: bool = False,
     **kwargs,
 ):
-    """Print the YAPENV computed configuration.
+    """Print the bole computed configuration.
     DICT_PATHS (array) is a value to search, e.g. 'a.b[0].c'. If no paths provided
     will print the entire config (same as view).
     """

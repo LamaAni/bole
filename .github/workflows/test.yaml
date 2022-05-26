@@ -30,7 +30,7 @@ jobs:
 
       - name: Prepare version
         env:
-          VERSION_PATH: "yapenv/.version"
+          VERSION_PATH: "bole/.version"
           GITHUB_BRANCH: ${{ github.ref }}
         run: |
           echo "Version number: ${GITHUB_REF##*/}"
@@ -39,6 +39,6 @@ jobs:
 
       - name: Test build
         env:
-          VERSION_PATH: "yapenv/.version"
+          VERSION_PATH: "bole/.version"
         run: |
           python setup.py sdist bdist_wheel

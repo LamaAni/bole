@@ -85,7 +85,7 @@ class CliConfigOptions(dict):
                 click.option(
                     "--cwd",
                     "--source-path",
-                    help="Execute yapenv from this path (Current working directory)",
+                    help="Execute bole from this path (Current working directory)",
                     default=os.curdir,
                 ),
                 click.option(
