@@ -36,6 +36,15 @@ class CascadingConfigDictionary(dict):
         val: Dict[str, Union[str, dict]],
         in_place: bool = True,
     ):
+        """Helper. Parse value as a Dict[str,cls] were cls is this class.
+
+        Args:
+            val (Dict[str, Union[str, dict]]): The value to parse.
+            in_place (bool, optional): Replace the items in val. Defaults to True.
+
+        Returns:
+            Dict[str,cls]: The parsed dictionary.
+        """
         rslt: Dict[str, cls] = val
         if not in_place:
             rslt = {}
@@ -49,6 +58,15 @@ class CascadingConfigDictionary(dict):
         val: List[Union[str, dict]],
         in_place: bool = True,
     ):
+        """Helper. Parse value as a List[cls] where cls is this class.
+
+        Args:
+            val (List[Union[str, dict]]): The value to parse.
+            in_place (bool, optional): Replace the items in the list. Defaults to True.
+
+        Returns:
+            List[cls]: The list of items.
+        """
         rslt: List[cls] = val
         if not in_place:
             rslt = []

@@ -6,6 +6,8 @@ from typing import Union
 
 
 class PrintFormat(enum.Enum):
+    """Object print format enum"""
+
     list = "list"
     cli = "cli"
     yaml = "yaml"

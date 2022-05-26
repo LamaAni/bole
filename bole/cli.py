@@ -9,6 +9,44 @@ from bole.consts import is_show_full_errors, __version__
 from bole.cli_options import CliConfigOptions, CliFormatOptions
 
 
+def __get_config_value(
+    config: CascadingConfig,
+    dict_paths: List[str],
+    allow_null: bool = False,
+    allow_missing: bool = False,
+):
+    """Helper method to print config value"""
+    rslt = None
+    was_found = False
+    if len(dict_paths) == 0:
+        # If no paths specified, display the entire config.
+        rslt = [config.to_dictionary()]
+        was_found = True
+    else:
+        # Search for paths in the config
+        rslt = config.find(*dict_paths)
+        # Clean the values from custom python types
+        rslt = [clean_data_types(v) for v in rslt]
+        was_found = len(rslt) > 0
+
+    if not was_found:
+        if allow_missing:
+            return ""
+        # Nothing was found. Throw error.
+        raise ValueError(f"The dictionary path(s) were not found in the config, searched: {', '.join(dict_paths)}")
+
+    if not allow_null and any(v is None for v in rslt):
+        raise ValueError("Found null values in path(s): " + ", ".join(dict_paths))
+
+    rslt = ["null" if v is None else v for v in rslt]
+
+    if len(dict_paths) < 2:
+        # If a single value requested, just display that value.
+        rslt = rslt[0]
+
+    return rslt
+
+
 @click.group("bole")
 def bole():
     """Easy logger and cascading configuration manager for python (yaml, json)"""
@@ -41,43 +79,6 @@ def config():
     pass
 
 
-def get_config_value(
-    config: CascadingConfig,
-    dict_paths: List[str],
-    allow_null: bool = False,
-    allow_missing: bool = False,
-):
-    rslt = None
-    was_found = False
-    if len(dict_paths) == 0:
-        # If no paths specified, display the entire config.
-        rslt = [config.to_dictionary()]
-        was_found = True
-    else:
-        # Search for paths in the config
-        rslt = config.find(*dict_paths)
-        # Clean the values from custom python types
-        rslt = [clean_data_types(v) for v in rslt]
-        was_found = len(rslt) > 0
-
-    if not was_found:
-        if allow_missing:
-            return ""
-        # Nothing was found. Throw error.
-        raise ValueError(f"The dictionary path(s) were not found in the config, searched: {', '.join(dict_paths)}")
-
-    if not allow_null and any(v is None for v in rslt):
-        raise ValueError("Found null values in path(s): " + ", ".join(dict_paths))
-
-    rslt = ["null" if v is None else v for v in rslt]
-
-    if len(dict_paths) < 2:
-        # If a single value requested, just display that value.
-        rslt = rslt[0]
-
-    return rslt
-
-
 @config.command("get")
 @CliConfigOptions.decorator()
 @CliFormatOptions.decorator(default_format=PrintFormat.yaml)
@@ -95,7 +96,7 @@ def config_get(
     will print the entire config (same as view).
     """
     config = CliConfigOptions(kwargs).load()
-    to_display = get_config_value(
+    to_display = __get_config_value(
         config,
         dict_paths=dict_paths,
         allow_null=allow_null,

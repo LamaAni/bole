@@ -46,6 +46,16 @@ class BoleLogFormatter(logging.Formatter):
         use_colors: bool = not NO_COLOR,
         alt_level_names: Dict[str, str] = ALT_LEVEL_NAMES,
     ) -> None:
+        """Bole log formatter. Used to create consistent logs
+
+        Args:
+            log_format (str, optional): The log format. Defaults to BOLE_LOG_FORMAT.
+            colors (Dict[str, str], optional): The log format colors. Defaults to COLORS.
+            level_colors (Dict[int, str], optional): The log level colors mapping. Defaults to LEVEL_COLORS.
+            use_colors (bool, optional): If ture, use colors. Defaults to [not NO_COLOR].
+            alt_level_names (Dict[str, str], optional): Replace log level names with other names.
+                Defaults to ALT_LEVEL_NAMES.
+        """
         super().__init__()
         self.log_format = log_format
         self.colors = colors or {}
@@ -80,6 +90,15 @@ class BoleLogFormatter(logging.Formatter):
 
 
 def create_logger(logger_name: str = None, log_level: Union[str, int] = None):
+    """Create a new bole logger, given a logger name.
+
+    Args:
+        logger_name (str, optional): The name of the new logger. Defaults to None.
+        log_level (Union[str, int], optional): Logger log level. Defaults to None.
+
+    Returns:
+        Logger: The new logger
+    """
     logger_name = logger_name or "bole-log-" + create_random_string()
     log = logging.getLogger(logger_name)
 

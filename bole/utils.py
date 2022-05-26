@@ -11,10 +11,12 @@ DEFAULT_RANDOM_STRING_CHARS = string.ascii_letters + string.digits
 
 
 def clean_data_types(val):
+    """Converts a data object to json data structure (list,dict,value)"""
     return json.loads(json.dumps(val))
 
 
 def resolve_log_level(level_name: Union[str, int]):
+    """Convert a string/int log level to a logging log level"""
     if isinstance(level_name, int):
         return level_name
     level = logging.getLevelName(level_name)
@@ -24,10 +26,20 @@ def resolve_log_level(level_name: Union[str, int]):
 
 
 def create_random_string(count: int = 5, charset: str = DEFAULT_RANDOM_STRING_CHARS):
+    """Creates a random string.
+
+    Args:
+        count (int, optional): The number of chars. Defaults to 5.
+        charset (str, optional): The useable charset. Defaults to DEFAULT_RANDOM_STRING_CHARS.
+
+    Returns:
+        str: The random string
+    """
     return "".join(random.choice(DEFAULT_RANDOM_STRING_CHARS) for i in range(count))
 
 
 def datetime_to_iso(val: datetime = None):
+    """Converts datetime to valid shell iso format."""
     val = val or datetime.now()
     as_iso = val.astimezone().replace(microsecond=0).isoformat()
     as_iso = as_iso[:-3] + as_iso[-2:]

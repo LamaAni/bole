@@ -3,6 +3,10 @@ environments:
     requirements:
       - import: requirements.dev.txt
 
+  ci:
+    requirements:
+      - import: requirements.ci.txt
+
 requirements:
   - import: requirements.txt
 
