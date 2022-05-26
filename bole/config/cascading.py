@@ -1,7 +1,7 @@
 import json
 import os
 import yaml
-from typing import Dict, List, Union
+from typing import List, Union
 from bole.consts import CONFIG_SEARCH_PATHS
 from bole.exceptions import BoleException
 from bole.utils import deep_merge
