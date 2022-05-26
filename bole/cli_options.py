@@ -7,6 +7,8 @@ from bole.format import PrintFormat, get_print_formatted
 
 
 class CliFormatOptions(dict):
+    """Holds cli print format options."""
+
     @property
     def no_quote(self) -> bool:
         return self.get("no_quote", False)
@@ -42,6 +44,8 @@ class CliFormatOptions(dict):
 
 
 class CliConfigOptions(dict):
+    """Holds cli config loading options."""
+
     SHOW_FULL_ERRORS = None
 
     @property

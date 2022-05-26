@@ -10,17 +10,25 @@ class CascadingConfigImport(CascadingConfigDictionary):
 
     @property
     def path(self) -> str:
+        """The import path"""
         return self.get("path", None)
 
     @property
     def recursive(self) -> bool:
+        """If true, this import is recursive. Defaults to True if ** in path"""
         return self.get("recursive", "**" in (self.path or ""))
 
     @property
     def required(self) -> bool:
+        """If true, this import is required (Ignored on glob search)"""
         return self.get("required", True)
 
     def find_files(self):
+        """Find files that match this import. (Glob search)
+
+        Returns:
+            [str]: Filepaths that match this import.
+        """
         assert self.path is not None, BoleException("Invalid import, src cannot be none")
 
         if "*" in self.path or "?" in self.path:
@@ -36,6 +44,12 @@ class CascadingConfigImport(CascadingConfigDictionary):
         val: Union[dict, str],
         defaults: dict = {},
     ):
+        """Create a new object of type CascadingConfigImport by parsing a value.
+
+        Args:
+            val (Union[dict, str]): The value import
+            defaults (dict, optional): Override default values with this dictionary. Defaults to {}.
+        """
         if isinstance(val, str):
             path = val
             val = defaults.copy()
@@ -60,8 +74,10 @@ class CascadingConfigSettings(CascadingConfigDictionary):
 
     @property
     def use_deep_merge(self) -> bool:
+        """If true, use deep merge when joining configurations otherwise just overwrite"""
         return self.get("use_deep_merge", True)
 
     @property
     def concatenate_lists(self) -> bool:
+        """If true, merged lists will be appended"""
         return self.get("concatenate_lists", True)

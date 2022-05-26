@@ -11,6 +11,15 @@ from bole.config.built_in import CascadingConfigImport, CascadingConfigSettings
 
 
 def config_file_parser(fpath: str, default_format: str = "yaml") -> dict:
+    """Default configuration file parser.
+
+    Args:
+        fpath (str): The path to the config file.
+        default_format (str, optional): The default format if cannot be identified by ext. Defaults to "yaml".
+
+    Returns:
+        dict: The loaded config file.
+    """
     _, format = os.path.splitext(fpath)
     if format.startswith("."):
         format = format[1:]
@@ -41,6 +50,15 @@ def merge_cascading_dicts(
     *sources: List[dict],
     merge_source: "CascadingConfig" = None,
 ):
+    """Internal. Merge cascading config using the config settings.
+
+    Args:
+        target (Union[dict, &quot;CascadingConfig&quot;]): The target of the merge.
+        merge_source (CascadingConfig, optional): The source for settings. Defaults to None.
+
+    Returns:
+        dict: Merged target.
+    """
     merge_source = merge_source or target
     if not isinstance(merge_source, CascadingConfig):
         merge_source = CascadingConfig.parse(target)
@@ -79,10 +97,12 @@ class CascadingConfig(CascadingConfigDictionary):
 
     @property
     def source_directory(self) -> str:
+        """The directory of the source path this config was loaded from. Equals source_path if its a directory"""
         return self.__source_directory
 
     @property
     def source_path(self) -> str:
+        """The source path this config was loaded from"""
         return self.__source_path
 
     @property
@@ -101,6 +121,11 @@ class CascadingConfig(CascadingConfigDictionary):
         """Call to initialize the configuration. Overridable."""
 
     def __merge_environment(self, environment: str = None):
+        """Overrideable. Merge the environment config into this config.
+
+        Args:
+            environment (str, optional): The name of the environment to merge. Defaults to None.
+        """
         if environment is not None and environment in self.environments:
             environment_dict = self.environments[environment].copy()
 
@@ -121,6 +146,7 @@ class CascadingConfig(CascadingConfigDictionary):
 
     @classmethod
     def __get_config_sibling_search_groups(cls, src: str, search_paths: List[str]):
+        """Internal returns the siblings search paths (as groups)"""
         sibling_search_groups = []
         cur_path = src
         while True:
@@ -149,6 +175,7 @@ class CascadingConfig(CascadingConfigDictionary):
         already_imported: set = None,
         load_imports: bool = True,
     ) -> List["CascadingConfig"]:
+        """Internal. Loads the configuration siblings by searching in the sibling source path"""
         # Recreate the list to allow multiple files.
         imports = list(imports)
         already_imported = already_imported or set()
@@ -221,16 +248,18 @@ class CascadingConfig(CascadingConfigDictionary):
         search_paths: List[str] = CONFIG_SEARCH_PATHS,
         parse_config=config_file_parser,
     ):
-        """Loads a configuration given a source path to look in.
+        """Loads a configuration from a source path.
 
         Args:
-            src (str): The path to configuration source. If a file, would load the file first,
-                And then continue to load the configuration from the directory.
-            initialize (bool, optional): Call the initialize function for each config before merging. Defaults to True.
-            max_inherit_depth (int, optional): The max number of inherited configs. <0 means INF. Defaults to -1
-            concatenate_lists (bool, optional): If true, concatenate the lists, otherwise try and merge them.
-            default_format (str, optional): The default format type to use when no extension is not matched.
-                If None will throw an error when file extension is not (yaml, json). Can be: yaml, json.
+            src (str): The path (file or directory) to load from.
+            environment (str, optional): The environment name to load for. Defaults to None.
+            max_inherit_depth (int, optional): The max number of inherited parents. Defaults to -1.
+            load_imports (bool, optional): Load imports when inheriting. Defaults to True.
+            search_paths (List[str], optional): The paths/subpaths where to look for config giles. Defaults to CONFIG_SEARCH_PATHS.
+            parse_config ((fpath)=>dict, optional): Parses the config file into a dictionary. Defaults to config_file_parser.
+
+        Returns:
+            CascadingConfig: The merged/collected config.
         """
 
         # mapping configuration filepaths
