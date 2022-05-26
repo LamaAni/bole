@@ -1,4 +1,16 @@
-test_value: "source"
+settings:
+  inherit: true
+environments:
+  test:
+    import:
+      - "**/*.test-import.yaml"
+    list:
+      - 3
+      - 4
 import:
-  - path: "**/*.import.yaml"
-    recursive: true
+  - "**/*.import.yaml"
+list:
+  - 1
+  - 2
+
+test_value: "source"
