@@ -179,6 +179,8 @@ class CascadingConfig(CascadingConfigDictionary):
             # Loading the config
             config: cls = cls.parse(parse_config(config_filepath))
             config.__merge_environment(environment=environment)
+            config._source_directory = os.path.dirname(config_filepath)
+            config._source_path = config_filepath
             config.initialize()
 
             if load_imports:
