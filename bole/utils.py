@@ -196,6 +196,12 @@ def find_in_collection(
             return None, False
         item = parent.get(item_name)
         was_found = True
+
+        # References a list number
+        if list_number is not None:
+            path = [f"[{list_number}]", *path[1:]]
+            return find_in_collection(item, path)
+
     if list_number is not None:
         assert isinstance(parent, list), f"{cur_item} references a list value but parent is not a list"
         if len(parent) <= list_number:

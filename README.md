@@ -22,6 +22,34 @@ pip install bole
 
 # Configuration
 
+## Example
+
+```yaml
+settings:
+    inherit: True # If true, allow inherit parent folders.
+environments:
+    test:
+        my_value: 22
+    dev: 
+        my_value: 42
+
+my_value: 0
+some_col:
+    a: 
+    - b: 0
+```
+
+To view this configuration just run (in the config folder),
+```shell
+bole config view
+```
+
+To get the result of `my_value`, run,
+```shell
+bole config get my_value # or
+bole config get some_col.a[0].b
+```
+
 ## Built in keywords and structures.
 
 The following keywords are reserved (default values presented)

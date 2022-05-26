@@ -23,6 +23,7 @@ def test_config_find(config: CascadingConfig = None, vals: dict = None):
         "test_value": "imported",
         "addon_value": "imported",
         "parent_value": "parent",
+        "col.a[0].b": "source"
     }
 
     config = config or CascadingConfig.load(TEST_CONFIG_PATH)
