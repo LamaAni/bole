@@ -5,7 +5,7 @@ from bole.format import PrintFormat
 
 from bole.log import log
 from bole.utils import clean_data_types, resolve_log_level
-from bole.consts import is_show_full_errors
+from bole.consts import is_show_full_errors, __version__
 from bole.cli_options import CliConfigOptions, CliFormatOptions
 
 
@@ -13,6 +13,11 @@ from bole.cli_options import CliConfigOptions, CliFormatOptions
 def bole():
     """Easy logger and cascading configuration manager for python (yaml, json)"""
     pass
+
+
+@bole.command("version", help="Show the bole version")
+def version():
+    print(__version__)
 
 
 @bole.command("log")
@@ -85,7 +90,7 @@ def config_get(
     allow_missing: bool = False,
     **kwargs,
 ):
-    """Print the YAPENV computed configuration.
+    """Print the bole computed configuration.
     DICT_PATHS (array) is a value to search, e.g. 'a.b[0].c'. If no paths provided
     will print the entire config (same as view).
     """
