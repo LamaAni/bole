@@ -42,6 +42,10 @@ environments:
 
 ```
 
+## Example configuration
+
+Example configuration with inheritance can be found in [tests](tests/test_files/root).
+
 # Contribution
 
 Feel free to ping me in issues or directly on LinkedIn to contribute.
