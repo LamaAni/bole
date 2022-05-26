@@ -1,7 +1,7 @@
 import json
 import os
 import yaml
-from typing import Dict, List, Union
+from typing import List, Union
 from bole.consts import CONFIG_SEARCH_PATHS
 from bole.exceptions import BoleException
 from bole.utils import deep_merge
@@ -110,8 +110,8 @@ class CascadingConfig(CascadingConfigDictionary):
         return CascadingConfigImport.parse_list(self.get(CASCADING_CONFIG_IMPORT_KEY, []))
 
     @property
-    def environments(self) -> Dict[str, "CascadingConfig"]:
-        return CascadingConfig.parse_dictionary(self.get("environments", {}))
+    def environments(self):
+        return self.parse_dictionary(self.get("environments", {}))
 
     @property
     def settings(self) -> CascadingConfigSettings:
