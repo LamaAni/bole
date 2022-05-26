@@ -74,8 +74,16 @@ class CascadingConfig(CascadingConfigDictionary):
                 in the keyword argument list. For example: dict(one=1, two=2)
         """
         super(CascadingConfigDictionary, self).__init__(*args, **kwargs)
-        self._source_path: str = None
-        self._source_directory: str = None
+        self.__source_path: str = None
+        self.__source_directory: str = None
+
+    @property
+    def source_directory(self) -> str:
+        return self.__source_directory
+
+    @property
+    def source_path(self) -> str:
+        return self.__source_path
 
     @property
     def config_imports(self) -> List[CascadingConfigImport]:
@@ -179,8 +187,8 @@ class CascadingConfig(CascadingConfigDictionary):
             # Loading the config
             config: cls = cls.parse(parse_config(config_filepath))
             config.__merge_environment(environment=environment)
-            config._source_directory = os.path.dirname(config_filepath)
-            config._source_path = config_filepath
+            config.__source_directory = os.path.dirname(config_filepath)
+            config.__source_path = config_filepath
             config.initialize()
 
             if load_imports:
@@ -295,7 +303,7 @@ class CascadingConfig(CascadingConfigDictionary):
                 )
             )
 
-        config._source_path = src
-        config._source_directory = src_directory
+        config.__source_path = src
+        config.__source_directory = src_directory
 
         return config
