@@ -110,8 +110,8 @@ class CascadingConfig(CascadingConfigDictionary):
         return CascadingConfigImport.parse_list(self.get(CASCADING_CONFIG_IMPORT_KEY, []))
 
     @property
-    def environments(self) -> Dict[str, "CascadingConfig"]:
-        return CascadingConfig.parse_dictionary(self.get("environments", {}))
+    def environments(self):
+        return self.parse_dictionary(self.get("environments", {}))
 
     @property
     def settings(self) -> CascadingConfigSettings:
