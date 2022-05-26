@@ -255,8 +255,10 @@ class CascadingConfig(CascadingConfigDictionary):
             environment (str, optional): The environment name to load for. Defaults to None.
             max_inherit_depth (int, optional): The max number of inherited parents. Defaults to -1.
             load_imports (bool, optional): Load imports when inheriting. Defaults to True.
-            search_paths (List[str], optional): The paths/subpaths where to look for config giles. Defaults to CONFIG_SEARCH_PATHS.
-            parse_config ((fpath)=>dict, optional): Parses the config file into a dictionary. Defaults to config_file_parser.
+            search_paths (List[str], optional): The paths/sub-paths where to look for config giles.
+                Defaults to CONFIG_SEARCH_PATHS.
+            parse_config ((fpath)=>dict, optional): Parses the config file into a dictionary.
+                Defaults to config_file_parser.
 
         Returns:
             CascadingConfig: The merged/collected config.
