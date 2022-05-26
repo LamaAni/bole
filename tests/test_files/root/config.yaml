@@ -9,8 +9,11 @@ environments:
       - 4
 import:
   - "**/*.import.yaml"
+
+test_value: "source"
 list:
   - 1
   - 2
-
-test_value: "source"
+col:
+  a:
+    - b: "source"
