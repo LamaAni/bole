@@ -133,7 +133,10 @@ class CascadingConfig(CascadingConfigDictionary):
             all_imports = environment_dict.get(CASCADING_CONFIG_IMPORT_KEY, []) + self.get(
                 CASCADING_CONFIG_IMPORT_KEY, []
             )
-            del environment_dict[CASCADING_CONFIG_IMPORT_KEY]
+
+            if CASCADING_CONFIG_IMPORT_KEY in environment_dict:
+                del environment_dict[CASCADING_CONFIG_IMPORT_KEY]
+
             if len(all_imports) > 0:
                 self[CASCADING_CONFIG_IMPORT_KEY] = all_imports
 
