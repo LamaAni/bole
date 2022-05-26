@@ -78,7 +78,11 @@ class CascadingConfigDictionary(dict):
         rslt: List[cls] = []
 
         for i in range(len(val)):
-            rslt[i] = cls.parse(val[i])
+            v = cls.parse(val[i])
+            if len(rslt) <= i:
+                rslt.append(v)
+            else:
+                rslt[i] = cls.parse(v)
 
         return rslt
 
@@ -178,7 +182,8 @@ class CascadingConfig(CascadingConfigDictionary):
 
     def initialize(self, environment: str = None):
         """Call to initialize the configuration. Overridable."""
-        pass
+        if environment is not None and environment in self.environments:
+            self.update(self.environments[environment])
 
     @classmethod
     def __get_config_search_groups(cls, src: str, search_paths: List[str]):
@@ -205,6 +210,7 @@ class CascadingConfig(CascadingConfigDictionary):
     def __load_siblings(
         cls,
         *search_path: str,
+        environment: str = None,
         parse_config=config_file_parser,
     ) -> List["CascadingConfig"]:
         # Mapping to imports
@@ -246,7 +252,7 @@ class CascadingConfig(CascadingConfigDictionary):
 
             # Loading the config
             config: cls = cls.parse(parse_config(config_files[0]))
-            config.initialize()
+            config.initialize(environment=environment)
             configs.append(config)
 
             if not config.inherit_siblings:
@@ -254,6 +260,8 @@ class CascadingConfig(CascadingConfigDictionary):
 
             # Insert any imports on top
             config_imports = config.config_imports + config_imports
+            if "import" in config:
+                del config["import"]
 
         return configs
 
@@ -297,7 +305,11 @@ class CascadingConfig(CascadingConfigDictionary):
         # Reading configurations as a cascading config.
         configurations: List[CascadingConfig] = []
         for src_group in config_src_groups:
-            siblings = cls.__load_siblings(*src_group, parse_config=parse_config)
+            siblings = cls.__load_siblings(
+                *src_group,
+                environment=environment,
+                parse_config=parse_config,
+            )
             siblings.reverse()
             grp_config = cls.parse(deep_merge({}, *siblings))
             configurations.append(grp_config)
@@ -311,10 +323,7 @@ class CascadingConfig(CascadingConfigDictionary):
         # Merging the configuration into a new config.
         config = cls.parse(deep_merge({}, *configurations, concatenate_lists=concatenate_lists))
 
-        if environment in config.environments:
-            config.update(config.environments[environment])
-
         if initialize:
-            config.initialize()
+            config.initialize(environment=environment)
 
         return config

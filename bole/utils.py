@@ -104,7 +104,7 @@ def deep_merge(target: Union[dict, list], *sources: Union[dict, list], concatena
                 if key not in target:
                     target[key] = src[key]
                     continue
-                merge_type = get_same_type(src[i], target[i], list, dict)
+                merge_type = get_same_type(src[key], target[key], list, dict)
                 if merge_type is not None:
                     target[key] = deep_merge(merge_type(), target[key], src[key])
                 else:

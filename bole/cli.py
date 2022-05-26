@@ -1,6 +1,6 @@
 from typing import List
 import click
-from bole.cascading_config import CascadingConfig
+from bole.config import CascadingConfig
 from bole.format import PrintFormat
 
 from bole.log import log
