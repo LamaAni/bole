@@ -21,7 +21,7 @@ class CascadingConfigImport(CascadingConfigDictionary):
     @property
     def required(self) -> bool:
         """If true, this import is required (Ignored on glob search)"""
-        return self.get("required", True)
+        return self.get("required", False)
 
     def find_files(self):
         """Find files that match this import. (Glob search)
