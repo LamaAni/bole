@@ -16,3 +16,15 @@ def is_show_full_errors():
 def mark_show_full_errors(val: bool = True):
     assert val is not None
     os.environ["SHOW_FULL_ERRORS"] = str(val).lower()
+
+
+def get_version():
+    """Return the bole version"""
+    version_path = os.path.join(os.path.dirname(__file__), ".version")
+    if os.path.isfile(version_path):
+        with open(version_path, "r") as raw:
+            return raw.read().strip()
+    return "local"
+
+
+__version__ = get_version()

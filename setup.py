@@ -32,12 +32,12 @@ version = version or os.environ.get("SETUP_VERSION", "debug")
 setup(
     name="bole",  # Required
     version=version,  # Required
-    description="Yet another python environment",
+    description="Easy logger and cascading configuration manager for python (yaml, json)",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url=GITHUB_URL,
     author="Zav Shotan",
-    keywords="environment, venv, virtualenv, pyenv, poetry",
+    keywords="configuration config log yaml json",
     packages=packages,
     include_package_data=True,
     entry_points={

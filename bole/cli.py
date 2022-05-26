@@ -5,7 +5,7 @@ from bole.format import PrintFormat
 
 from bole.log import log
 from bole.utils import clean_data_types, resolve_log_level
-from bole.consts import is_show_full_errors
+from bole.consts import is_show_full_errors, __version__
 from bole.cli_options import CliConfigOptions, CliFormatOptions
 
 
@@ -13,6 +13,11 @@ from bole.cli_options import CliConfigOptions, CliFormatOptions
 def bole():
     """Easy logger and cascading configuration manager for python (yaml, json)"""
     pass
+
+
+@bole.command("version", help="Show the yapenv version")
+def version():
+    print(__version__)
 
 
 @bole.command("log")
