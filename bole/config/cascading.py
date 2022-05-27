@@ -222,7 +222,7 @@ class CascadingConfig(CascadingConfigDictionary):
             config.initialize()
 
             if load_imports:
-                if config.settings.inherit:
+                if config.settings.inherit_siblings:
                     # if the config has imports they should come before it.
                     configs += cls.__load_siblings(
                         imports=config.config_imports,
