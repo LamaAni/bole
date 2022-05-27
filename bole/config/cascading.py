@@ -31,7 +31,9 @@ def config_file_parser(fpath: str, default_format: str = "yaml") -> dict:
     with open(fpath, "r") as config_file:
         config_file_text = config_file.read()
 
-    if format == "yaml":
+    if config_file_text.strip() == "":
+        as_dict = {}
+    elif format == "yaml":
         as_dict = yaml.safe_load(config_file_text)
     elif format == "json":
         as_dict = json.loads(config_file_text)
