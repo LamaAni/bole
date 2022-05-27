@@ -81,3 +81,7 @@ class CascadingConfigSettings(CascadingConfigDictionary):
     def concatenate_lists(self) -> bool:
         """If true, merged lists will be appended"""
         return self.get("concatenate_lists", True)
+
+    @property
+    def allow_imports(self) -> bool:
+        return self.get("allow_imports", True)

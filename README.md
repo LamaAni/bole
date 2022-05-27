@@ -58,6 +58,7 @@ The following keywords are reserved (default values presented)
 settings:
     inherit: False # If true, allow inherit parent folders.
     inherit_siblings: True # If true allow inherit configuration files in the same source directory.
+    allow_imports: True # If false dose not allow imports.
     use_deep_merge: True # Merge configurations via deep merge. If false, Only root keys are merged (and overwritten)
     concatenate_lists: True # When merging, append the merged list to the current one.
 imports:
