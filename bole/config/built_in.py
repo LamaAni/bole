@@ -3,6 +3,7 @@ import os
 from typing import Union
 from bole.config.dict import CascadingConfigDictionary
 from bole.exceptions import BoleException
+from bole.utils import resolve_path
 
 
 class CascadingConfigImport(CascadingConfigDictionary):
@@ -23,20 +24,29 @@ class CascadingConfigImport(CascadingConfigDictionary):
         """If true, this import is required (Ignored on glob search)"""
         return self.get("required", False)
 
-    def find_files(self):
+    def find_files(self, search_from_directory: str):
         """Find files that match this import. (Glob search)
 
-        Returns:
-            [str]: Filepaths that match this import.
-        """
-        assert self.path is not None, BoleException("Invalid import, src cannot be none")
+        Args:
+            search_from_directory (str): For imports with partial paths, 
+            start searching for the import from this directory. Required since
+            most imports are relative.
 
-        if "*" in self.path or "?" in self.path:
-            return glob.glob(self.path, recursive=self.recursive is True)
+        Returns:
+            List[str]: The list of absolute paths to load the config from.
+        """
+        assert isinstance(self.path, str) and len(self.path) > 0, BoleException(
+            "Invalid import, src cannot be none or empty"
+        )
+
+        import_path = resolve_path(self.path, root_directory=search_from_directory)
+
+        if "*" in import_path or "?" in import_path:
+            return glob.glob(import_path, recursive=self.recursive is True)
 
         if self.required:
-            assert os.path.exists(self.path), BoleException(f"Invalid import, source path {self.path} not found")
-        return [self.path] if os.path.isfile(self.path) else []
+            assert os.path.exists(import_path), BoleException(f"Invalid import, source path {import_path} not found")
+        return [import_path] if os.path.isfile(import_path) else []
 
     @classmethod
     def parse(

@@ -1,3 +1,4 @@
+# reserved keys
 settings:
   inherit: true
 environments:
@@ -10,6 +11,9 @@ environments:
 import:
   - imported.yaml
   - "**/*.import.yaml"
+
+# Source values
+source_value: "source"
 
 test_value: "source"
 list:
