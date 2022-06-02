@@ -1,0 +1,5 @@
+multi_imported_value_1: "imported"
+override_in_multi_import_1: "imported"
+
+import:
+  - imported_import.yaml

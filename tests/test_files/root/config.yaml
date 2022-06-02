@@ -1,3 +1,4 @@
+# reserved keys
 settings:
   inherit: true
 environments:
@@ -8,12 +9,25 @@ environments:
       - 3
       - 4
 import:
+  - imported.yaml
   - "**/*.import.yaml"
 
-test_value: "source"
+# Source values
+source_value: "source"
+
+# Overrides
+override_inherit: "source"
+override_in_single_import: "source"
+override_in_multi_import_1: "source"
+override_in_multi_import_2: "source"
+
+# Environment test (merge)
+override_in_environment_import: "source"
 list:
   - 1
   - 2
+
+# Test complicated path
 col:
   a:
     - b: "source"

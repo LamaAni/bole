@@ -179,6 +179,7 @@ class CascadingConfig(CascadingConfigDictionary):
         parse_config=config_file_parser,
         already_imported: set = None,
         load_imports: bool = True,
+        search_from_directory: str = None,
     ) -> List["CascadingConfig"]:
         """Internal. Loads the configuration siblings by searching in the sibling source path"""
         # Recreate the list to allow multiple files.
@@ -191,7 +192,7 @@ class CascadingConfig(CascadingConfigDictionary):
         # Processing imports
         while len(imports) > 0:
             config_import = imports.pop(0)
-            config_files = config_import.find_files()
+            config_files = config_import.find_files(search_from_directory=search_from_directory)
 
             # If no imports
             if len(config_files) == 0:
@@ -231,6 +232,7 @@ class CascadingConfig(CascadingConfigDictionary):
                         environment=environment,
                         parse_config=parse_config,
                         already_imported=already_imported,
+                        search_from_directory=config.source_directory,
                     )
 
                 if CASCADING_CONFIG_IMPORT_KEY in config:
@@ -324,11 +326,11 @@ class CascadingConfig(CascadingConfigDictionary):
         else:
             merge_source = configurations[0]
 
-            # Order of merging is reversed
-            configurations.reverse()
-
             if max_inherit_depth > -1:
                 configurations = configurations[0 : max_inherit_depth + 1]  # noqa E203
+
+            # Order of merging is reversed
+            configurations.reverse()
 
             # Merging the configuration into a new config.
             config = cls.parse(
