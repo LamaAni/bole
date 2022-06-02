@@ -290,6 +290,8 @@ class CascadingConfig(CascadingConfigDictionary):
             grp = list(grp)
             imports: List[CascadingConfigImport] = []
             for filepath in grp:
+                if not os.path.isfile(filepath):
+                    continue
                 imports.append(
                     CascadingConfigImport.parse(
                         filepath,
@@ -299,6 +301,9 @@ class CascadingConfig(CascadingConfigDictionary):
                         },
                     )
                 )
+
+            if len(imports) == 0:
+                continue
 
             siblings = cls.__load_siblings(
                 imports,

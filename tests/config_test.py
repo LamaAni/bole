@@ -46,6 +46,10 @@ def test_parent_inherit():
     validate_config_values(vals={"parent_value": "parent"})
 
 
+def test_tests_inherit():
+    validate_config_values(vals={"tests_inherit_value": "tests"})
+
+
 def test_config_max_depth():
     config = CascadingConfig.load(TEST_CONFIG_PATH, max_inherit_depth=0)
     validate_config_values(config, {"parent_value": None})
