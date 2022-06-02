@@ -28,7 +28,7 @@ class CascadingConfigImport(CascadingConfigDictionary):
         """Find files that match this import. (Glob search)
 
         Args:
-            search_from_directory (str): For imports with partial paths, 
+            search_from_directory (str): For imports with partial paths,
             start searching for the import from this directory. Required since
             most imports are relative.
 

@@ -46,6 +46,16 @@ def test_parent_inherit():
     validate_config_values(vals={"parent_value": "parent"})
 
 
+def test_config_max_depth():
+    config = CascadingConfig.load(TEST_CONFIG_PATH, max_inherit_depth=0)
+    validate_config_values(config, {"parent_value": None})
+
+
+def test_config_no_imports():
+    config = CascadingConfig.load(TEST_CONFIG_PATH, load_imports=False)
+    validate_config_values(config, {"override_in_single_import": "source"})
+
+
 def test_import_single_file():
     validate_config_values(vals={"single_imported_value": "imported"})
 
@@ -59,21 +69,46 @@ def test_import_multi_file():
     )
 
 
-# def test_config_max_depth():
-#     config = CascadingConfig.load(TEST_CONFIG_PATH, max_inherit_depth=1)
-#     validate_config_values(config, {"test_value": "imported"})
+def test_override_inherit():
+    validate_config_values(
+        vals={
+            "override_inherit": "source",
+        }
+    )
 
 
-# def test_config_no_imports():
-#     config = CascadingConfig.load(TEST_CONFIG_PATH, load_imports=False)
-#     validate_config_values(config, {"test_value": "source"})
+def test_override_single_import():
+    validate_config_values(
+        vals={
+            "override_in_single_import": "imported",
+        }
+    )
 
 
-# def test_config_env():
-#     config = CascadingConfig.load(TEST_CONFIG_PATH, environment="test")
-#     validate_config_values(
-#         config,
-#         {
-#             "list": [1, 2, 3, 4],
-#         },
-#     )
+def test_override_multi_import():
+    validate_config_values(
+        vals={
+            "override_in_multi_import_1": "imported",
+            "override_in_multi_import_2": "imported",
+        }
+    )
+
+
+def test_override_environment_import():
+    config = CascadingConfig.load(TEST_CONFIG_PATH, environment="test")
+    validate_config_values(
+        config=config,
+        vals={
+            "override_in_environment_import": "env-imported",
+        },
+    )
+
+
+def test_config_env():
+    config = CascadingConfig.load(TEST_CONFIG_PATH, environment="test")
+    validate_config_values(
+        config,
+        {
+            "list": [1, 2, 3, 4],
+        },
+    )

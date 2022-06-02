@@ -326,11 +326,11 @@ class CascadingConfig(CascadingConfigDictionary):
         else:
             merge_source = configurations[0]
 
-            # Order of merging is reversed
-            configurations.reverse()
-
             if max_inherit_depth > -1:
                 configurations = configurations[0 : max_inherit_depth + 1]  # noqa E203
+
+            # Order of merging is reversed
+            configurations.reverse()
 
             # Merging the configuration into a new config.
             config = cls.parse(
