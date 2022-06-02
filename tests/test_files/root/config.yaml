@@ -8,6 +8,7 @@ environments:
       - 3
       - 4
 import:
+  - imported.yaml
   - "**/*.import.yaml"
 
 test_value: "source"
