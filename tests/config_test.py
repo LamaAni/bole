@@ -60,6 +60,10 @@ def test_import_single_file():
     validate_config_values(vals={"single_imported_value": "imported"})
 
 
+def test_import_at_parent():
+    validate_config_values(vals={"parent_import_value": "imported"})
+
+
 def test_import_multi_file():
     validate_config_values(
         vals={

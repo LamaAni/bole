@@ -2,3 +2,6 @@
 test_value: "parent"
 parent_value: "parent"
 override_in_source: "parent"
+
+import:
+  - parent_import.yaml
