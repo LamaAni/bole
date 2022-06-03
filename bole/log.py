@@ -96,11 +96,9 @@ class BoleLogFormatter(logging.Formatter):
         data: Union[str, dict, Any],
         log_format: str = None,
     ):
+        format_map = self.get_log_values_dictionary(data)
         if self.allow_missing_values:
-            format_map = defaultdict(lambda: "", self.get_log_values_dictionary(data))
-            # format_map.update()
-        else:
-            format_map = self.get_log_values_dictionary(data)
+            format_map = defaultdict(lambda: "", format_map)
 
         log_format = log_format if log_format is not None else self.log_format
 
