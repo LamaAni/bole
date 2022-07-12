@@ -64,7 +64,8 @@ class BoleLogFormatter(logging.Formatter):
             use_colors (bool, optional): If ture, use colors. Defaults to [not NO_COLOR].
             alt_level_names (Dict[str, str], optional): Replace log level names with other names.
                 Defaults to ALT_LEVEL_NAMES.
-            exception_fields (List[str], optional): Add the exception text, if provided, to the message. (will not add logging context)
+            exception_fields (List[str], optional): Add the exception text, if provided, to the message.
+                (will not add logging context)
         """
         super().__init__()
         self.log_format = log_format
