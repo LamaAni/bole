@@ -128,7 +128,9 @@ class BoleLogFormatter(logging.Formatter):
                         if isinstance(ef_val, TypeError):
                             ef_val = f"(Skipped) Error info was skipped: {ef_val}"
                         if isinstance(ef_val, Exception):
-                            ef_val ="\n".join(traceback.format_exception(type(ef_val), value=ef_val, tb=ef_val.__traceback__))
+                            ef_val = "\n".join(
+                                traceback.format_exception(type(ef_val), value=ef_val, tb=ef_val.__traceback__)
+                            )
 
                     exception_lines.append(str(ef_val))
                 except TypeError as ex:
