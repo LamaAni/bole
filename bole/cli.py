@@ -3,7 +3,7 @@ import click
 from bole.config.cascading import CascadingConfig
 from bole.format import PrintFormat
 
-from bole.log import log
+from bole.log.log import log
 from bole.utils import clean_data_types, resolve_log_level
 from bole.consts import is_show_full_errors, __version__
 from bole.cli_options import CliConfigOptions, CliFormatOptions
